@@ -68,7 +68,7 @@ pipeline {
             steps {
                 sh '''
                  ssh -o StrictHostKeyChecking=no -i /home/ubuntu/new-key ubuntu@${SERVER_IP} \"
-                    sh /home/ubuntu/deploy.sh ${ECR_URI} ${BUILD_NUMBER}
+                    sh /home/ubuntu/flutterdeploy.sh ${ECR_URI} ${BUILD_NUMBER}
 
             \"
             '''
