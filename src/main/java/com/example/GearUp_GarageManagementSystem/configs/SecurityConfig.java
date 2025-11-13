@@ -37,7 +37,10 @@ public class SecurityConfig {
                         .requestMatchers("/api/factories/**").permitAll()
                         .requestMatchers("/api/tools/**").hasAnyRole("PLANT_HEAD","OWNER")  //ONLY FOR PLANT_HEAD
                         .requestMatchers("/api/owner/dashboard/**").permitAll()
-                        .requestMatchers("/api/staff/").hasRole("OWNER")
+                        .requestMatchers("/api/staff/**").hasRole("OWNER")
+                        .requestMatchers("/api/member/**").hasRole("CENTRAL_OFFICER")
+                        .requestMatchers("/api/merchandise/**").hasRole("CENTRAL_OFFICER")
+                        .requestMatchers("/api/redemptions/**").hasRole("CENTRAL_OFFICER")
                         .requestMatchers("https://bannered-odilia-unwastefully.ngrok-free.dev/**").permitAll()
 
                         .anyRequest().authenticated()

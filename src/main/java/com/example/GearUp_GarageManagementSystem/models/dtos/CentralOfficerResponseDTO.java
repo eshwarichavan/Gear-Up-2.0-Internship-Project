@@ -6,14 +6,20 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class SignInResponseDTO {
+@AllArgsConstructor
 
+public class CentralOfficerResponseDTO {
+
+    private Long id;
+    private String fullName;
     private String email;
+    private String phone;
+    private String userCity;
+    private String userAddress;
+    private String profileImageURL;
     private Roles role;
+    private String centralOfficeName;
     private String message;
-    private String accessToken;
-    private String refreshToken;
 
 }

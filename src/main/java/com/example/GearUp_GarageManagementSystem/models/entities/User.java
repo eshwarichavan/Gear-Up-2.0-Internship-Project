@@ -45,7 +45,6 @@ public class User {
     private String address;
     private String profileImageURL;
 
-    @NotBlank(message = "Factory registration number is required")
     @Column(name = "assigned_factory",nullable = false,unique = true)
     private String assignedFactory;
 
@@ -84,6 +83,10 @@ public class User {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "central_office_id")
     private CentralOffice centralOffice;
+
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Rewards rewards;
 
 
 

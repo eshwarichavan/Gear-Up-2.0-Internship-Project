@@ -1,10 +1,7 @@
 package com.example.GearUp_GarageManagementSystem.services;
 
 import com.example.GearUp_GarageManagementSystem.execptions.CustomException;
-import com.example.GearUp_GarageManagementSystem.models.dtos.FactoryUserCreateRequestDTO;
-import com.example.GearUp_GarageManagementSystem.models.dtos.UserRequestDTO;
-import com.example.GearUp_GarageManagementSystem.models.dtos.UserResponseDTO;
-import com.example.GearUp_GarageManagementSystem.models.dtos.UserSummaryDTO;
+import com.example.GearUp_GarageManagementSystem.models.dtos.*;
 import com.example.GearUp_GarageManagementSystem.models.entities.User;
 import com.example.GearUp_GarageManagementSystem.models.enums.Roles;
 import com.example.GearUp_GarageManagementSystem.repositories.UserRepository;
@@ -26,7 +23,6 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImpl {
 
-
     @Autowired
     private UserRepository userRepository;
 
@@ -35,6 +31,7 @@ public class UserServiceImpl {
 
     @Autowired
     private EmailService emailService;
+
 
     //Create User :
     public void createFactoryUser(FactoryUserCreateRequestDTO userDTO) {
@@ -71,7 +68,7 @@ public class UserServiceImpl {
 
 
     //Update User :
-    public UserResponseDTO updateUser(Long id, UserRequestDTO requestDTO) {
+    public ProfileResponseDTO updateUser(Long id, ProfileRequestDTO requestDTO) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new CustomException("User not found with Id : " + id , HttpStatus.NOT_FOUND));
 
@@ -84,12 +81,12 @@ public class UserServiceImpl {
         if(requestDTO.getPassword() != null && !requestDTO.getPassword().isEmpty()){
             user.setPassword(passwordEncoder.encode(requestDTO.getPassword()));
         }
-        user.setRoles(requestDTO.getRoles());
         user.setUpdatedAt(LocalDateTime.now());
 
         userRepository.save(user);
-        return mapToResponse(user);
+        return mapToProfileResponse(user);
     }
+
 
     //Delete User :
     public void deleteUser(Long id) {
@@ -129,6 +126,17 @@ public class UserServiceImpl {
                 user.isActive(),
                 user.isVerified(),
                 user.getProfileImageURL()
+        );
+    }
+
+    public ProfileResponseDTO mapToProfileResponse(User user) {
+        return new ProfileResponseDTO(
+                user.getId(),
+                user.getFullName(),
+                user.getEmail(),
+                user.getProfileImageURL(),
+                user.getAddress(),
+                user.getPassword()
         );
     }
 

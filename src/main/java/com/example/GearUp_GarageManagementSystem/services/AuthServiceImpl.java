@@ -7,8 +7,10 @@ import com.example.GearUp_GarageManagementSystem.models.dtos.DistributorRegister
 import com.example.GearUp_GarageManagementSystem.models.dtos.SignInRequestDTO;
 import com.example.GearUp_GarageManagementSystem.models.dtos.SignInResponseDTO;
 import com.example.GearUp_GarageManagementSystem.models.entities.RefreshToken;
+import com.example.GearUp_GarageManagementSystem.models.entities.Rewards;
 import com.example.GearUp_GarageManagementSystem.models.entities.User;
 import com.example.GearUp_GarageManagementSystem.models.enums.Roles;
+import com.example.GearUp_GarageManagementSystem.repositories.RewardsRepository;
 import com.example.GearUp_GarageManagementSystem.repositories.UserRepository;
 import com.example.GearUp_GarageManagementSystem.utils.JwtUtil;
 import jakarta.validation.Valid;
@@ -30,6 +32,9 @@ public class AuthServiceImpl {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private RewardsRepository rewardsRepository;
 
     @Autowired
     private JwtUtil jwtUtil;
@@ -63,6 +68,14 @@ public class AuthServiceImpl {
 
 
         User saved=userRepository.save(distributor);
+        if (saved.getRoles() == Roles.DISTRIBUTOR) {
+            Rewards member = new Rewards();
+            member.setUser(saved);
+            member.setTotalPoints(0L);
+            rewardsRepository.save(member);
+
+            System.out.println("New Distributor Member's entry created in Rewards: " + saved.getEmail());
+        }
 
         // Generate JWT Token using email and role
         List<String> roles = Collections.singletonList(saved.getRoles().name());

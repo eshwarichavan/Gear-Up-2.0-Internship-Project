@@ -41,7 +41,13 @@ public class SwaggerConfig {
                         new Tag().name("Authentication API"),   //gives priority to this controller first
                         new Tag().name("Users API"),
                         new Tag().name("Factory API"),
-                        new Tag().name("Product API")
+                        new Tag().name("Dashboard API"),
+                        new Tag().name("Product API"),
+                        new Tag().name("Staff API"),
+                        new Tag().name("Tool API"),
+                        new Tag().name("Member API"),
+                        new Tag().name("Merchandise API"),
+                        new Tag().name("Redemption API")
                 ))
 
 

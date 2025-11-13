@@ -1,18 +1,11 @@
 package com.example.GearUp_GarageManagementSystem.controllers;
 
-import com.example.GearUp_GarageManagementSystem.models.dtos.FactoryUserCreateRequestDTO;
-import com.example.GearUp_GarageManagementSystem.models.dtos.UserRequestDTO;
-import com.example.GearUp_GarageManagementSystem.models.dtos.UserResponseDTO;
-import com.example.GearUp_GarageManagementSystem.models.dtos.UserSummaryDTO;
-import com.example.GearUp_GarageManagementSystem.services.UserService;
+import com.example.GearUp_GarageManagementSystem.models.dtos.*;
 import com.example.GearUp_GarageManagementSystem.services.UserServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -40,12 +33,12 @@ public class UserController {
     }
 
     //Update User :
-    @PutMapping("/update/{id}")
+    @PutMapping("profile/update/{id}")
     @Operation(summary = "Updates the User Data")
-    public ResponseEntity<UserResponseDTO> updateUser(
+    public ResponseEntity<ProfileResponseDTO> updateUser(
             @Valid
             @PathVariable Long id,
-            @RequestBody UserRequestDTO dto){
+            @RequestBody ProfileRequestDTO dto){
         return ResponseEntity.ok(userServiceImpl.updateUser(id,dto));
 
     }
