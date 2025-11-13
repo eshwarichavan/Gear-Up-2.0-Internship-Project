@@ -53,13 +53,13 @@ pipeline {
 
         stage('Build docker image and push to ECR') {
             steps {
-                sh '''
+                sh """
                     aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin ${ECR_URI}
                     sudo docker build -t flutterbackend:${env.BUILD_NUMBER} .
                     sudo docker tag flutterbackend:${env.BUILD_NUMBER} ${ECR_URI}/flutterbackend:${env.BUILD_NUMBER}
                     sudo docker push ${ECR_URI}/flutterbackend:${env.BUILD_NUMBER}
 
-                '''
+                """
             }
 
         }
