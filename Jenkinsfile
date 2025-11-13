@@ -6,13 +6,6 @@ pipeline {
         AWS_CREDS = credentials('aws-creds')
         AWS_DEFAULT_REGION='ap-south-1'
         SERVER_IP=credentials('SERVER_IP')
-        // MAIL_PORT=587
-        // MAIL_USERNAME=credentials('MAIL_USERNAME')
-        // MAIL_PASSWORD=('MAIL_PASSWORD')
-        // DB_URL=credentials('DB_URL_FLUTTER')
-        // DB_USERNAME=credentials('DB_USERNAME_FLUTTER')
-        // DB_PASSWORD=credentials('DB_PASSWORD_FLUTTER')
-        // JWT_REFRESH_EXPIRATION_MS=credentials('JWT_REFRESH_EXPIRATION_MS')
 
     }
 
@@ -50,7 +43,7 @@ pipeline {
                 withSonarQubeEnv('Sonar') { 
                sh '''
                 mvn sonar:sonar \
-                    -Dsonar.projectKey=inventory_iosbackend \
+                    -Dsonar.projectKey=GearUp_GarageManagementSystem \
                     -Dsonar.host.url=$SONAR_HOST_URL \
                     -Dsonar.login=$SONAR_AUTH_TOKEN
             '''
@@ -73,31 +66,14 @@ pipeline {
 
         stage('Docker container run'){
             steps {
-                 withCredentials([string(credentialsId: 'flutter_creds', variable: 'MY_CREDS')]) {
-        
                 sh '''
-                set -a
-                source <(echo "$MY_CREDS")
-                set+a
-                ssh -i /home/ubuntu/new-key.pem ubuntu@${SERVER_IP} \"
-                    aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin ${ECR_URI}
-                    sudo docker pull ${ECR_URI}/flutterbackend:${env.BUILD_NUMBER}
-                    sudo docker stop fluttercont || true
-                    sudo docker rm fluttercont || true
-                    sudo docker run -d --name fluttercont -p 8001:8080 \\
-                    -e  MAIL_PORT=587 \\
-                    -e MAIL_USERNAME=${MAIL_USERNAME} \\
-                    -e MAIL_PASSWORD=${MAIL_PASSWORD} \\
-                    -e DB_URL=${DB_URL_FLUTTER} \\
-                    -e DB_USERNAME=${DB_USERNAME_FLUTTER} \\
-                    -e DB_PASSWORD=${DB_PASSWORD_FLUTTER} \\
-                    -e JWT_REFRESH_EXPIRATION_MS=${JWT_REFRESH_EXPIRATION_MS} \\
-                     ${ECR_URI}/flutterbackend:${env.BUILD_NUMBER}
+                 ssh -o StrictHostKeyChecking=no -i /home/ubuntu/new-key ubuntu@${SERVER_IP} \"
+                    sh /home/ubuntu/deploy.sh ${ECR_URI} ${BUILD_NUMBER}
 
-                    \"
-                '''
-
-            }}
+            \"
+            '''
+            }
+            }
 
         }
 
@@ -107,4 +83,3 @@ pipeline {
 
     
 
-}
