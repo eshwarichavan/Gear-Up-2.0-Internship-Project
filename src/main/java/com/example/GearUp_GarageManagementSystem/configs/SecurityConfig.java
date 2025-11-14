@@ -44,7 +44,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/merchandise/**").hasRole("CENTRAL_OFFICER")
                         .requestMatchers("/api/redemptions/**").hasRole("CENTRAL_OFFICER")
                         .requestMatchers("https://bannered-odilia-unwastefully.ngrok-free.dev/**").permitAll()
-                        .requestMatchers("http://13.233.133.20:8080/api/**").permitAll()
+                        .requestMatchers("http://172.31.130.159:8080/api/**").permitAll()
                         .requestMatchers("/api/health").permitAll()
                         .anyRequest().authenticated()
                 )
