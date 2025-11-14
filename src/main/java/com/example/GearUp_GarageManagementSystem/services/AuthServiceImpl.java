@@ -1,20 +1,10 @@
 package com.example.GearUp_GarageManagementSystem.services;
 
-import com.example.GearUp_GarageManagementSystem.configs.LoginPasswordGenerator;
-import com.example.GearUp_GarageManagementSystem.execptions.CustomException;
-import com.example.GearUp_GarageManagementSystem.models.dtos.DistributorRegisterRequestDTO;
-import com.example.GearUp_GarageManagementSystem.models.dtos.DistributorRegisterResponseDTO;
-import com.example.GearUp_GarageManagementSystem.models.dtos.SignInRequestDTO;
-import com.example.GearUp_GarageManagementSystem.models.dtos.SignInResponseDTO;
-import com.example.GearUp_GarageManagementSystem.models.entities.RefreshToken;
-import com.example.GearUp_GarageManagementSystem.models.entities.Rewards;
-import com.example.GearUp_GarageManagementSystem.models.entities.User;
-import com.example.GearUp_GarageManagementSystem.models.enums.Roles;
-import com.example.GearUp_GarageManagementSystem.repositories.RewardsRepository;
-import com.example.GearUp_GarageManagementSystem.repositories.UserRepository;
-import com.example.GearUp_GarageManagementSystem.utils.JwtUtil;
-import jakarta.validation.Valid;
-import org.apache.commons.lang3.concurrent.ConcurrentException;
+import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,10 +12,19 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import com.example.GearUp_GarageManagementSystem.execptions.CustomException;
+import com.example.GearUp_GarageManagementSystem.models.dtos.DistributorRegisterRequestDTO;
+import com.example.GearUp_GarageManagementSystem.models.dtos.DistributorRegisterResponseDTO;
+import com.example.GearUp_GarageManagementSystem.models.dtos.SignInRequestDTO;
+import com.example.GearUp_GarageManagementSystem.models.dtos.SignInResponseDTO;
+import com.example.GearUp_GarageManagementSystem.models.entities.RefreshToken;
+import com.example.GearUp_GarageManagementSystem.models.entities.User;
+import com.example.GearUp_GarageManagementSystem.models.enums.Roles;
+import com.example.GearUp_GarageManagementSystem.repositories.RewardsRepository;
+import com.example.GearUp_GarageManagementSystem.repositories.UserRepository;
+import com.example.GearUp_GarageManagementSystem.utils.JwtUtil;
+
+import jakarta.validation.Valid;
 
 @Service
 public class AuthServiceImpl {
@@ -68,14 +67,14 @@ public class AuthServiceImpl {
 
 
         User saved=userRepository.save(distributor);
-        if (saved.getRoles() == Roles.DISTRIBUTOR) {
-            Rewards member = new Rewards();
-            member.setUser(saved);
-            member.setTotalPoints(0L);
-            rewardsRepository.save(member);
+        // if (saved.getRoles() == Roles.DISTRIBUTOR) {
+        //     Rewards member = new Rewards();
+        //     member.setUser(saved);
+        //     member.setTotalPoints(0L);
+        //     rewardsRepository.save(member);
 
-            System.out.println("New Distributor Member's entry created in Rewards: " + saved.getEmail());
-        }
+        //     System.out.println("New Distributor Member's entry created in Rewards: " + saved.getEmail());
+        // }
 
         // Generate JWT Token using email and role
         List<String> roles = Collections.singletonList(saved.getRoles().name());
