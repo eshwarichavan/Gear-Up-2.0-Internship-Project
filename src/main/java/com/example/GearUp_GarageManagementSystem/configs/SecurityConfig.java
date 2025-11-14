@@ -1,7 +1,7 @@
 package com.example.GearUp_GarageManagementSystem.configs;
 
-import com.example.GearUp_GarageManagementSystem.filters.JwtAuthFilter;
-import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,7 +16,9 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.List;
+import com.example.GearUp_GarageManagementSystem.filters.JwtAuthFilter;
+
+import jakarta.servlet.http.HttpServletResponse;
 
 @Configuration
 public class SecurityConfig {
@@ -42,7 +44,8 @@ public class SecurityConfig {
                         .requestMatchers("/api/merchandise/**").hasRole("CENTRAL_OFFICER")
                         .requestMatchers("/api/redemptions/**").hasRole("CENTRAL_OFFICER")
                         .requestMatchers("https://bannered-odilia-unwastefully.ngrok-free.dev/**").permitAll()
-
+                        .requestMatchers("http://13.233.133.20:8080/api/**").permitAll()
+                        
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(ex -> ex
